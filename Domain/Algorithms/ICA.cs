@@ -67,7 +67,7 @@ namespace Domain.Algorithms
                 int coloniesCount = (int)(imperialist.NormalizedPower * _icaConfig.InitialColoniesCount);
 
                 empire.Imperialist = imperialist;
-                empire.Colonies = countries.Take(_icaConfig.InitialEmpiresCount + coloniesCount);
+                empire.Colonies = countries.Take(_icaConfig.InitialEmpiresCount + coloniesCount).ToList();
 
                 empires.Add(empire);
             }
