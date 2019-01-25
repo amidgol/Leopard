@@ -6,6 +6,9 @@ namespace Domain.Models
 {
     public class CompositionPlan:BaseEntity
     {
-        public List<SingleTaskService> TaskServices { get; set; }
+        public List<TaskService> TaskServices { get; set; }
+        public double Cost { get; set; }
+        public double  Power { get; set; }
+        public double  NormalizedPower { get; set; }
     }
 }

@@ -2,53 +2,74 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Domain.Extensions;
+using Domain.Extensions.Ica;
 using Domain.ICA;
 using Domain.Models;
 
 namespace Domain.Algorithms
 {
-    public class Ica : IAlgorithm<CompositionPlan, CompositionRequest>
+    public class Ica : IAlgorithm<CompositionRequest, IcaConfig, CompositionPlan>
     {
-        public CompositionRequest Execute(CompositionPlan input)
+        private readonly IcaConfig _icaConfig;
+
+        public Ica(IcaConfig icaConfig)
         {
-            throw new NotImplementedException();
+            _icaConfig = icaConfig;
         }
-
-        private IEnumerable<CompositionPlan> CreateInitialCountries(CompositionRequest request)
+        public CompositionPlan Execute(CompositionRequest input, IcaConfig config)
         {
-            List<CompositionPlan> countries = new List<CompositionPlan>();
-            double id = 1;
+            List<CompositionPlan> countries = input.CreateInitialCountries().ToList();
 
-            foreach (var requestCandidateWebService in request.CandidateWebServices)
+            List<Empire<CompositionPlan>> empires = CreateInitialEmpires(countries).ToList();
+
+            foreach (Empire<CompositionPlan> empire in empires)
             {
-                CompositionPlan country = new CompositionPlan();
-
-                foreach (SingleTask item in request.SingleTasks)
-                {
-                    Random random = new Random();
-
-                    double randomNumber = random.Next(1, request.CandidateWebServices.Count());
-
-                    SingleTaskService singleTaskService = new SingleTaskService
-                    {
-                        SingleTask = item,
-                        WebService = request.CandidateWebServices.First(x => x.Id == randomNumber)
-                    };
-                    
-                    country.TaskServices.Add(singleTaskService);
-
-                    id++;
-                }
-
-                countries.Add(country);
+                empire.Assimilate(config.QualityAttributeWeights);
+ 
             }
 
-            return countries;
-        }
-
-        private IEnumerable<Empire<CompositionPlan>> CreateInitialEmpires(List<CompositionPlan> compositionPlans)
-        {
             throw new NotImplementedException();
         }
+
+        private IEnumerable<Empire<CompositionPlan>> CreateInitialEmpires(List<CompositionPlan> countries)
+        {
+            foreach (var country in countries)
+            {
+                country.Cost = country.CalculateCost(_icaConfig.QualityAttributeWeights);
+                country.Power = 1 - country.Cost;
+            }
+
+            countries = countries.OrderBy(x => x.Cost).ToList();
+
+            IEnumerable<CompositionPlan> initialImperialists = countries
+                .Take(_icaConfig.InitialEmpiresCount).ToList();
+
+            double sum = 0;
+            foreach (CompositionPlan imperialist in initialImperialists)
+            {
+                sum += imperialist.Cost;
+            }
+
+            List<Empire<CompositionPlan>> empires = new List<Empire<CompositionPlan>>
+                (initialImperialists.Count());
+
+            foreach (CompositionPlan imperialist in initialImperialists)
+            {
+                Empire<CompositionPlan> empire = new Empire<CompositionPlan>();
+
+                imperialist.NormalizedPower = imperialist.Power / sum;
+
+                int coloniesCount = (int)(imperialist.NormalizedPower * _icaConfig.InitialColoniesCount);
+
+                empire.Imperialist = imperialist;
+                empire.Colonies = countries.Take(_icaConfig.InitialEmpiresCount + coloniesCount);
+
+                empires.Add(empire);
+            }
+
+            return empires;
+        }
+
     }
 }

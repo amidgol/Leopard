@@ -4,8 +4,8 @@ using System.Text;
 
 namespace Domain
 {
-    public interface IAlgorithm<in T, out TResult>
+    public interface IAlgorithm<in T, in TConfig, out TResult>
     {
-        TResult Execute(T input);
+        TResult Execute(T input, TConfig config);
     }
 }

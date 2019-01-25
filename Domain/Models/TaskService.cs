@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace Domain.Models
 {
-    public  class SingleTaskService
+    public  class TaskService
     {
-        public SingleTask  SingleTask { get; set; }
+        public SingleTask  Task { get; set; }
         public WebService WebService { get; set; }
     }
 }

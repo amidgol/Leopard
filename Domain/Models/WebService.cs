@@ -10,5 +10,7 @@ namespace Domain.Models
         public string Url { get; set; }
         public IEnumerable<QualityAttributeValue> QualityAttributeValues { get; set; }
 
+        public double Cost { get; set; }
+
     }
 }
