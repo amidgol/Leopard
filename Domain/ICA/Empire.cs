@@ -9,5 +9,6 @@ namespace Domain.ICA
         public TCountry Imperialist { get; set; }
         public List<TCountry> Colonies { get; set; }
         public IFitnessCalculator<TCountry> FitnessCalculator { get; set; }
+        public double TotalCost { get; set; }
     }
 }

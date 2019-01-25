@@ -47,5 +47,14 @@ namespace Domain.Extensions.Ica
 
             return empire;
         }
+
+        public static Empire<CompositionPlan> CalculateCost(this Empire<CompositionPlan> empire, double zeta)
+        {
+            double totalCost = empire.Imperialist.Cost + zeta * (empire.Colonies.Select(x => x.Cost).Average());
+
+            empire.TotalCost = totalCost;
+
+            return empire;
+        }
     }
 }

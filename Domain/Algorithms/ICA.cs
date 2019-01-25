@@ -28,6 +28,8 @@ namespace Domain.Algorithms
                 empire.Assimilate(config.QualityAttributeWeights);
 
                 empire.UpdateAfterAssimilation();
+
+                empire.CalculateCost(_icaConfig.Zeta);
             }
 
 
