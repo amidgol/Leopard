@@ -26,8 +26,10 @@ namespace Domain.Algorithms
             foreach (Empire<CompositionPlan> empire in empires)
             {
                 empire.Assimilate(config.QualityAttributeWeights);
- 
+
+                empire.UpdateAfterAssimilation();
             }
+
 
             throw new NotImplementedException();
         }

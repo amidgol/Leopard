@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Domain.ICA;
 using Domain.Models;
@@ -31,6 +32,20 @@ namespace Domain.Extensions.Ica
             }
 
             return empire;
-        } 
+        }
+
+        public static Empire<CompositionPlan> UpdateAfterAssimilation(this Empire<CompositionPlan> empire)
+        {
+            CompositionPlan bestColony = empire.Colonies.OrderBy(x => x.Cost).First();
+
+            if (bestColony.Cost < empire.Imperialist.Cost)
+            {
+                CompositionPlan formerImperialist = empire.Imperialist;
+                empire.Imperialist = bestColony;
+                empire.Colonies[0] = formerImperialist;
+            }
+
+            return empire;
+        }
     }
 }
