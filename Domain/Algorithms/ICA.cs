@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,11 +25,9 @@ namespace Domain.Algorithms
 
             foreach (Empire<CompositionPlan> empire in empires)
             {
-                empire.Assimilate(config.QualityAttributeWeights);
-
-                empire.UpdateAfterAssimilation();
-
-                empire.CalculateCost(_icaConfig.Zeta);
+                empire.Assimilate(config.QualityAttributeWeights)
+                .UpdateAfterAssimilation()
+                .CalculateCost(_icaConfig.Zeta);
             }
 
 
@@ -58,6 +56,8 @@ namespace Domain.Algorithms
             List<Empire<CompositionPlan>> empires = new List<Empire<CompositionPlan>>
                 (initialImperialists.Count());
 
+            int skipCount = _icaConfig.InitialEmpiresCount;
+
             foreach (CompositionPlan imperialist in initialImperialists)
             {
                 Empire<CompositionPlan> empire = new Empire<CompositionPlan>();
@@ -67,9 +67,11 @@ namespace Domain.Algorithms
                 int coloniesCount = (int)(imperialist.NormalizedPower * _icaConfig.InitialColoniesCount);
 
                 empire.Imperialist = imperialist;
-                empire.Colonies = countries.Take(_icaConfig.InitialEmpiresCount + coloniesCount).ToList();
+                empire.Colonies = countries.Skip(skipCount).Take(coloniesCount).ToList();
 
                 empires.Add(empire);
+
+                skipCount+=coloniesCount;
             }
 
             return empires;
