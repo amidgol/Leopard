@@ -10,5 +10,6 @@ namespace Domain.ICA
         public List<TCountry> Colonies { get; set; }
         public IFitnessCalculator<TCountry> FitnessCalculator { get; set; }
         public double TotalCost { get; set; }
+        public double NormalizedPower { get; set; }
     }
 }

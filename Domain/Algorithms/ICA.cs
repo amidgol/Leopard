@@ -23,15 +23,19 @@ namespace Domain.Algorithms
 
             List<Empire<CompositionPlan>> empires = CreateInitialEmpires(countries).ToList();
 
-            foreach (Empire<CompositionPlan> empire in empires)
+            while (empires.Count>1)
             {
-                empire.Assimilate(config.QualityAttributeWeights)
-                .UpdateAfterAssimilation()
-                .CalculateCost(_icaConfig.Zeta);
+                foreach (Empire<CompositionPlan> empire in empires)
+                {
+                    empire.Assimilate(config.QualityAttributeWeights)
+                        .UpdateAfterAssimilation()
+                        .CalculateCost(_icaConfig.Zeta);
+                }
+
+                empires.NormalizePowers().Compete().EliminatePowerlessEmpires();
             }
 
-
-            throw new NotImplementedException();
+            return empires.First().Imperialist;
         }
 
         private IEnumerable<Empire<CompositionPlan>> CreateInitialEmpires(List<CompositionPlan> countries)
