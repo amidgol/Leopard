@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using Domain.Algorithms.Ica.Extensions;
 using Domain.Extensions;
 using Domain.ICA;
@@ -21,17 +23,40 @@ namespace Domain.Algorithms.Ica
 
             List<Empire<CompositionPlan>> empires = CreateInitialEmpires(countries).ToList();
 
-            while (empires.Count>1)
-            {
-                foreach (Empire<CompositionPlan> empire in empires)
-                {
-                    empire.Assimilate(config.QualityAttributeWeights)
-                        .UpdateAfterAssimilation()
-                        .CalculateCost(_icaConfig.Zeta);
-                }
+            double iteration = 1;
 
-                empires.NormalizePowers().Compete().EliminatePowerlessEmpires();
+            using (System.IO.StreamWriter file =
+                new System.IO.StreamWriter(@"C:\Users\Amid\Desktop\out.txt"))
+            {
+                file.Flush();
+                while (empires.Count > 1 && iteration < 10000)
+                {
+                    foreach (Empire<CompositionPlan> empire in empires)
+                    {
+                        empire.Assimilate(config.QualityAttributeWeights)
+                            .UpdateAfterAssimilation()
+                            .CalculateCost(_icaConfig.Zeta);
+                    }
+
+                    empires.NormalizePowers().Compete();
+
+                    empires.EliminatePowerlessEmpires();
+
+                    string output =
+                        $"iteration {iteration}," +
+                        $" empires: {empires.Count}," +
+                        $" best solution:{empires.First().Imperialist}," +
+                        $" best cost:{empires.First().Imperialist.Cost}";
+
+                    file.WriteLine($"{iteration},{empires.First().Imperialist.Cost}");
+
+                    Console.WriteLine(output);
+                    iteration++;
+                }
             }
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"Cost: {empires.First().Imperialist.Cost}");
 
             return empires.First().Imperialist;
         }
@@ -52,7 +77,7 @@ namespace Domain.Algorithms.Ica
             double sum = 0;
             foreach (CompositionPlan imperialist in initialImperialists)
             {
-                sum += imperialist.Cost;
+                sum += imperialist.Power;
             }
 
             List<Empire<CompositionPlan>> empires = new List<Empire<CompositionPlan>>
@@ -73,9 +98,13 @@ namespace Domain.Algorithms.Ica
 
                 empires.Add(empire);
 
-                skipCount+=coloniesCount;
+                skipCount += coloniesCount;
             }
 
+            List<CompositionPlan> remainedCountries = countries.Skip(skipCount)
+                .Take(countries.Count - skipCount).ToList();
+
+            empires.First().Colonies.AddRange(remainedCountries);
             return empires;
         }
 

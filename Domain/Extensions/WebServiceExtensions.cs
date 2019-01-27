@@ -14,7 +14,7 @@ namespace Domain.Extensions
 
             foreach (QualityAttributeValue attributeValue in webService.QualityAttributeValues)
             {
-                float weight = weights.First(x => x.QualityAttribute.Title
+                double weight = weights.First(x => x.QualityAttribute.Title
                     .Equals(attributeValue.QualityAttribute.Title)).Weight;
 
                 cost += weight * attributeValue.GetNormalizedValue();

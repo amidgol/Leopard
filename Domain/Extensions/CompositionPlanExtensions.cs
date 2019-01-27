@@ -28,10 +28,12 @@ namespace Domain.Extensions
         {
             Random random = new Random();
 
-            List<double> maskList = new List<double>(compositionPlan.TaskServices.Count)
+            List<double> maskList = new List<double>();
+
+            for (var index = 0; index < compositionPlan.TaskServices.Count; index++)
             {
-                (double) random.Next(0, 100) / 100
-            };
+                maskList.Add((double) random.Next(0, 100) / 100);
+            }
 
             return maskList;
         }

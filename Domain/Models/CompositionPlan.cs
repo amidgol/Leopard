@@ -10,5 +10,17 @@ namespace Domain.Models
         public double Cost { get; set; }
         public double  Power { get; set; }
         public double  NormalizedPower { get; set; }
+
+        public override string ToString()
+        {
+            string result = "";
+
+            foreach (TaskService taskService in TaskServices)
+            {
+                result += $"{taskService.WebService.Title} - ";
+            }
+
+            return $"{result} Cost: {Cost}";
+        }
     }
 }

@@ -11,5 +11,10 @@ namespace Domain.ICA
         public IFitnessCalculator<TCountry> FitnessCalculator { get; set; }
         public double TotalCost { get; set; }
         public double NormalizedPower { get; set; }
+
+        public override string ToString()
+        {
+            return $"Colonies: {Colonies.Count}, Power:{NormalizedPower}";
+        }
     }
 }

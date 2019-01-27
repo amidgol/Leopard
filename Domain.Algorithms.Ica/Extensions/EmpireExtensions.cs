@@ -12,14 +12,17 @@ namespace Domain.Algorithms.Ica.Extensions
         public static List<Empire<CompositionPlan>> EliminatePowerlessEmpires(
             this List<Empire<CompositionPlan>> empires)
         {
+            
+
             foreach (Empire<CompositionPlan> empire in empires)
             {
                 if (empire.Colonies.Count == 0)
                 {
-                    empires.JoinRandomly(empire.Imperialist);
-                    empires.Remove(empire);
+                     empires.JoinRandomly(empire.Imperialist);
                 }
             }
+
+            empires.RemoveAll(x => x.Colonies.Count == 0);
 
             return empires;
         }
@@ -30,7 +33,7 @@ namespace Domain.Algorithms.Ica.Extensions
 
             foreach (Empire<CompositionPlan> empire in empires)
             {
-                empire.NormalizedPower = maxCost - empire.TotalCost;
+                empire.NormalizedPower = 1 - empire.TotalCost;
             }
 
             return empires;
@@ -52,7 +55,7 @@ namespace Domain.Algorithms.Ica.Extensions
         private static List<Empire<CompositionPlan>> JoinRandomly(this List<Empire<CompositionPlan>> empires,
             CompositionPlan country)
         {
-            double sumNormalizedPowers = empires.Select(e => e.NormalizedPower).Sum();
+            double sumNormalizedPowers = empires.Where(e=>e.Colonies.Any()).Select(e => e.NormalizedPower).Sum();
 
             double[] probabilities = new double[empires.Count - 1];
             Random random = new Random();
@@ -97,13 +100,23 @@ namespace Domain.Algorithms.Ica.Extensions
 
         public static Empire<CompositionPlan> UpdateAfterAssimilation(this Empire<CompositionPlan> empire)
         {
-            CompositionPlan bestColony = empire.Colonies.OrderBy(x => x.Cost).First();
 
-            if (bestColony.Cost < empire.Imperialist.Cost)
+            try
             {
-                CompositionPlan formerImperialist = empire.Imperialist;
-                empire.Imperialist = bestColony;
-                empire.Colonies[0] = formerImperialist;
+                empire.Colonies.OrderBy(x => x.Cost);
+                CompositionPlan bestColony = empire.Colonies.OrderBy(x => x.Cost).First();
+
+                if (bestColony.Cost < empire.Imperialist.Cost)
+                {
+                    CompositionPlan formerImperialist = empire.Imperialist;
+                    empire.Imperialist = bestColony;
+                    empire.Colonies.Remove(bestColony);
+                    empire.Colonies.Add(formerImperialist);
+                }
+            }
+            catch (Exception)
+            {
+
             }
 
             return empire;
