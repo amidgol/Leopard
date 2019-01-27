@@ -6,7 +6,7 @@ using Domain.Models;
 
 namespace Domain.Extensions
 {
-    internal static class CompositionRequestExtensions
+    public static class CompositionRequestExtensions
     {
         public static IEnumerable<CompositionPlan> CreateInitialCountries(this CompositionRequest request)
         {

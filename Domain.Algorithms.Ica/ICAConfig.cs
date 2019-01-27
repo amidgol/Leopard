@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Domain.Models;
 
-namespace Domain.ICA
+namespace Domain.Algorithms.Ica
 {
     public class IcaConfig
     {

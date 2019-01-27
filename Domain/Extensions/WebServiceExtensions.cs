@@ -6,7 +6,7 @@ using Domain.Models;
 
 namespace Domain.Extensions
 {
-    internal static class WebServiceExtensions
+    public static class WebServiceExtensions
     {
         public static double CalculateCost(this WebService webService, List<QualityAttributeWeight> weights)
         {

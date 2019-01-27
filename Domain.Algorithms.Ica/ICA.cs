@@ -1,13 +1,11 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Domain.Algorithms.Ica.Extensions;
 using Domain.Extensions;
-using Domain.Extensions.Ica;
 using Domain.ICA;
 using Domain.Models;
 
-namespace Domain.Algorithms
+namespace Domain.Algorithms.Ica
 {
     public class Ica : IAlgorithm<CompositionRequest, IcaConfig, CompositionPlan>
     {

@@ -5,7 +5,7 @@ using Domain.Models;
 
 namespace Domain.Extensions
 {
-    internal static class QualityAttributeValueExtensions
+    public static class QualityAttributeValueExtensions
     {
         public static double GetNormalizedValue(this QualityAttributeValue qualityAttributeValue)
         {

@@ -5,7 +5,7 @@ using Domain.Models;
 
 namespace Domain.Extensions
 {
-    internal static class CompositionPlanExtensions
+    public static class CompositionPlanExtensions
     {
         public static double CalculateCost(this CompositionPlan compositionPlan,
             List<QualityAttributeWeight> qualityAttributeWeights)
