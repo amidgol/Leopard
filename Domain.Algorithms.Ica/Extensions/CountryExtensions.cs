@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using Domain.Models;
+using WebServiceComposition.Domain.Models;
 
-namespace Domain.Algorithms.Ica.Extensions
+namespace WebServiceComposition.Algorithms.Ica.Extensions
 {
     public static class CountryExtensions
     {

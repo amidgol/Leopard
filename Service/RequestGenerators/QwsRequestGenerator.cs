@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Domain;
-using Domain.Extensions;
-using Domain.Models;
+using WebServiceComposition.Domain;
+using WebServiceComposition.Domain.Models;
 
-namespace Service.RequestGenerators
+namespace WebServiceCompositionService.RequestGenerators
 {
     public class QwsRequestGenerator : IRequestGenerator
     {

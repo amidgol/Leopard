@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{549BA5B7-8414-4AE5-AE15-A850C775D1E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebServiceComposition.Domain", "Domain\WebServiceComposition.Domain.csproj", "{549BA5B7-8414-4AE5-AE15-A850C775D1E4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service", "Service\Service.csproj", "{89E8A7D2-2310-45D7-B4ED-D74AECF6B8D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebServiceCompositionService", "Service\WebServiceCompositionService.csproj", "{89E8A7D2-2310-45D7-B4ED-D74AECF6B8D7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cli", "Cli\Cli.csproj", "{A1073510-3AFA-45F2-955F-FCB4B3D1CA47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebServiceComposition.Cli", "Cli\WebServiceComposition.Cli.csproj", "{A1073510-3AFA-45F2-955F-FCB4B3D1CA47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Algorithms.Ica", "Domain.Algorithms.Ica\Domain.Algorithms.Ica.csproj", "{6CFC8E71-5F34-4CE6-92B7-6AB90A3254D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebServiceComposition.Algorithms.Ica", "Domain.Algorithms.Ica\WebServiceComposition.Algorithms.Ica.csproj", "{6CFC8E71-5F34-4CE6-92B7-6AB90A3254D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

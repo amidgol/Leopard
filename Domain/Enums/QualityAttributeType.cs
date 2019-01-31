@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Domain.Enums
+﻿namespace WebServiceComposition.Domain.Enums
 {
     public enum QualityAttributeType
     {

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Domain.Enums;
+using WebServiceComposition.Domain.Enums;
 
-namespace Domain.Models
+namespace WebServiceComposition.Domain.Models
 {
     public class QualityAttribute
     {

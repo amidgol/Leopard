@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using WebServiceComposition.Domain;
 
-namespace Domain.Algorithms.Ica.Models
+namespace WebServiceComposition.Algorithms.Ica.Models
 {
     public class Empire<TCountry> where TCountry:class
     {

@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using Domain.Models;
+﻿using WebServiceComposition.Domain.Models;
 
-namespace Domain.Algorithms.Ica
+namespace WebServiceComposition.Algorithms.Ica
 {
     public class IcaConfig:Config
     {

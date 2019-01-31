@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Domain;
-using Domain.Models;
+using WebServiceComposition.Domain;
+using WebServiceComposition.Domain.Models;
 
-namespace Service.RequestGenerators
+namespace WebServiceCompositionService.RequestGenerators
 {
     public class RandomRequestGenerator : IRequestGenerator
     {

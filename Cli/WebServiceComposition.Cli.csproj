@@ -12,9 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Domain.Algorithms.Ica\Domain.Algorithms.Ica.csproj" />
-    <ProjectReference Include="..\Domain\Domain.csproj" />
-    <ProjectReference Include="..\Service\Service.csproj" />
+    <ProjectReference Include="..\Domain.Algorithms.Ica\WebServiceComposition.Algorithms.Ica.csproj" />
+    <ProjectReference Include="..\Domain\WebServiceComposition.Domain.csproj" />
+    <ProjectReference Include="..\Service\WebServiceCompositionService.csproj" />
   </ItemGroup>
 
   <ItemGroup>

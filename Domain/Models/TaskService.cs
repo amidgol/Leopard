@@ -1,7 +1,4 @@
-﻿using System;
-using System.Text;
-
-namespace Domain.Models
+﻿namespace WebServiceComposition.Domain.Models
 {
     public  class TaskService
     {

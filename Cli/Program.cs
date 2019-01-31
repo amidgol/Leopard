@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Domain;
-using Domain.Algorithms.Ica;
-using Domain.Enums;
-using Domain.Models;
 using Microsoft.Extensions.Configuration;
-using Service.RequestGenerators;
+using WebServiceComposition.Algorithms.Ica;
+using WebServiceComposition.Domain;
+using WebServiceComposition.Domain.Enums;
+using WebServiceComposition.Domain.Models;
+using WebServiceCompositionService.RequestGenerators;
 
-namespace Cli
+namespace WebServiceComposition.Cli
 {
     class Program
     {

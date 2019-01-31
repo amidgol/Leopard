@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using Domain.Algorithms.Ica.Extensions;
-using Domain.Algorithms.Ica.Models;
-using Domain.Extensions;
-using Domain.Models;
+using WebServiceComposition.Algorithms.Ica.Extensions;
+using WebServiceComposition.Algorithms.Ica.Models;
+using WebServiceComposition.Domain;
+using WebServiceComposition.Domain.Extensions;
+using WebServiceComposition.Domain.Models;
 
-namespace Domain.Algorithms.Ica
+namespace WebServiceComposition.Algorithms.Ica
 {
     public class Ica : IAlgorithm<CompositionRequest, IcaConfig, CompositionPlan>
     {

@@ -1,4 +1,4 @@
-﻿namespace Domain.Models
+﻿namespace WebServiceComposition.Domain.Models
 {
     public class QualityAttributeValue
     {

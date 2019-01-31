@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Principal;
-using System.Text;
-using Domain.Models;
+using WebServiceComposition.Domain.Models;
 
-namespace Domain.Extensions
+namespace WebServiceComposition.Domain.Extensions
 {
     public static class CompositionRequestExtensions
     {

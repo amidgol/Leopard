@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace Domain.Models
+﻿namespace WebServiceComposition.Domain.Models
 {
     public class SingleTask
     {

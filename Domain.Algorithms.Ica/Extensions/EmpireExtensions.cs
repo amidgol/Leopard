@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Domain.Algorithms.Ica.Models;
-using Domain.Extensions;
-using Domain.Models;
-namespace Domain.Algorithms.Ica.Extensions
+using WebServiceComposition.Algorithms.Ica.Models;
+using WebServiceComposition.Domain.Extensions;
+using WebServiceComposition.Domain.Models;
+
+namespace WebServiceComposition.Algorithms.Ica.Extensions
 {
     internal static class EmpireExtensions
     {

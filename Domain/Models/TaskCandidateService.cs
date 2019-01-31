@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Domain.Models
+namespace WebServiceComposition.Domain.Models
 {
     public class TaskCandidateService
     {
