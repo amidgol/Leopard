@@ -4,5 +4,10 @@
     {
         public QualityAttribute QualityAttribute { get; set; }
         public double Weight { get; set; }
+
+        public override string ToString()
+        {
+            return $"{QualityAttribute.Title}, Weight: {Weight}";
+        }
     }
 }

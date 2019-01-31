@@ -13,5 +13,10 @@ namespace Domain.Models
         public string Unit { get; set; }
         public double MinPossibleValue { get; set; }
         public double MaxPossibleValue { get; set; }
+
+        public override string ToString()
+        {
+            return Title;
+        }
     }
 }
