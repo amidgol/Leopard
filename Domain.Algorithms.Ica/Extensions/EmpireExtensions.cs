@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Domain.Algorithms.Ica.Models;
 using Domain.Extensions;
-using Domain.ICA;
 using Domain.Models;
 namespace Domain.Algorithms.Ica.Extensions
 {
@@ -74,13 +74,13 @@ namespace Domain.Algorithms.Ica.Extensions
         }
 
         public static Empire<CompositionPlan> Assimilate(this Empire<CompositionPlan> empire,
-            List<QualityAttributeWeight> attributeWeights)
+            List<QualityAttributeWeight> attributeWeights, CompositionRequest request)
         {
             foreach (CompositionPlan colony in empire.Colonies)
             {
                 List<double> mask = colony.GetMask();
 
-                for (var i = 0; i < colony.TaskServices.Count; i++)
+                for (int i = 0; i < colony.TaskServices.Count; i++)
                 {
                     TaskService taskService = colony.TaskServices[i];
 

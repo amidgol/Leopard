@@ -8,7 +8,8 @@ namespace Domain.Extensions
 {
     public static class WebServiceExtensions
     {
-        public static double CalculateCost(this WebService webService, List<QualityAttributeWeight> weights)
+        public static double CalculateCost(this WebService webService,
+            List<QualityAttributeWeight> weights)
         {
             double cost = 0;
 

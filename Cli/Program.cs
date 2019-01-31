@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using Domain;
 using Domain.Algorithms.Ica;
 using Domain.Enums;
 using Domain.Models;
+using Service.RequestGenerators;
 
 namespace Cli
 {
@@ -10,65 +13,86 @@ namespace Cli
     {
         static void Main(string[] args)
         {
+            List<SingleTask> tasks = new List<SingleTask>
+            {
+                new SingleTask{Title = "A"},
+                new SingleTask{Title = "B"},
+                new SingleTask{Title = "C"},
+                new SingleTask{Title = "D"},
+                new SingleTask{Title = "E"},
+                new SingleTask{Title = "F"},
+                new SingleTask{Title = "G"},
+                new SingleTask{Title = "H"}
+            };
+            
             QualityAttribute availability = new QualityAttribute
             {
                 Title = "Availability",
-                MinPossibleValue = 0,
-                MaxPossibleValue = 1,
-                Type = QualityAttributeType.BenefitOriented,
-                Unit = "Probability",
-                Scale = typeof(double)
+                Type = QualityAttributeType.BenefitOriented
             };
             QualityAttribute reliability = new QualityAttribute
             {
                 Title = "Reliability",
-                MinPossibleValue = 0,
-                MaxPossibleValue = 1,
-                Type = QualityAttributeType.BenefitOriented,
-                Unit = "Probability",
-                Scale = typeof(double)
+                Type = QualityAttributeType.BenefitOriented
             };
-            QualityAttribute rank = new QualityAttribute
+            QualityAttribute throughput = new QualityAttribute
             {
-                Title = "Rank",
-                MinPossibleValue = 1,
-                MaxPossibleValue = 5,
-                Type = QualityAttributeType.BenefitOriented,
-                Unit = "int",
-                Scale = typeof(int)
+                Title = "Throughput",
+                Type = QualityAttributeType.BenefitOriented
+
             };
+            QualityAttribute responseTime = new QualityAttribute
+            {
+                Title = "ResponseTime",
+                Type = QualityAttributeType.CostOriented
+            };
+
             IcaConfig icaConfig = new IcaConfig
             {
+                Tasks = tasks,
+                DataSetFilePath = @"C:\Users\Amid\Desktop\QWS_Dataset_V2.txt",
                 QualityAttributeWeights = new List<QualityAttributeWeight>
                 {
                     new QualityAttributeWeight
                     {
                         QualityAttribute = availability,
-                        Weight = 0.4
+                        Weight = 0.3
                     },
                     new QualityAttributeWeight
                     {
                         QualityAttribute = reliability,
-                        Weight = 0.6
+                        Weight = 0.3
+                    },
+                    new QualityAttributeWeight
+                    {
+                        QualityAttribute = throughput,
+                        Weight = 0.2
+                    },
+                    new QualityAttributeWeight
+                    {
+                        QualityAttribute = responseTime,
+                        Weight = 0.2
                     }
                 }
             };
 
             Ica ica = new Ica(icaConfig);
 
-            ica.Execute(GenerateRequest(icaConfig, availability, reliability, rank), icaConfig);
+            IRequestGenerator requestGenerator = new QwsRequestGenerator();
+            CompositionRequest request = requestGenerator.Generate(icaConfig);
 
-            Console.WriteLine("Hello World!");
+            ica.Execute(request, icaConfig);
+
             Console.ReadLine();
         }
 
         private static CompositionRequest GenerateRequest(IcaConfig config, params QualityAttribute[] attributes)
         {
-            List<TaskCandidateServices> candidateServices = new List<TaskCandidateServices>();
+            List<TaskCandidateService> candidateServices = new List<TaskCandidateService>();
 
             Random random = new Random();
 
-            TaskCandidateServices weatherForecast = new TaskCandidateServices
+            TaskCandidateService weatherForecast = new TaskCandidateService
             {
                 Task = new SingleTask { Title = "Weather Forecast" },
                 WebServices = new List<WebService>()
@@ -104,7 +128,7 @@ namespace Cli
                 });
             }
 
-            TaskCandidateServices stock = new TaskCandidateServices
+            TaskCandidateService stock = new TaskCandidateService
             {
                 Task = new SingleTask { Title = "Stock Market" },
                 WebServices = new List<WebService>()
@@ -143,7 +167,7 @@ namespace Cli
 
             CompositionRequest request = new CompositionRequest
             {
-                TaskCandidateServices = new List<TaskCandidateServices>
+               TaskCandidateServices  = new List<TaskCandidateService>
                {
                    stock,weatherForecast
                }

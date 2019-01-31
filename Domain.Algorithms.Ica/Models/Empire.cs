@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace Domain.ICA
+namespace Domain.Algorithms.Ica.Models
 {
     public class Empire<TCountry> where TCountry:class
     {

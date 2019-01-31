@@ -17,7 +17,7 @@ namespace Domain.Extensions
 
             List<List<TaskService>> listOfLists = new List<List<TaskService>>();
 
-            foreach (TaskCandidateServices taskCandidateServices in request.TaskCandidateServices)
+            foreach (TaskCandidateService taskCandidateServices in request.TaskCandidateServices)
             {
                 SingleTask task = taskCandidateServices.Task;
                 List<TaskService> taskServices = new List<TaskService>();
@@ -39,20 +39,24 @@ namespace Domain.Extensions
                 listOfLists.Add(taskServices);
             }
 
-            for (int i = 0; i < Math.Min(listOfLists[0].Count, listOfLists[1].Count); i++)
+
+            for (int i = 0; i < listOfLists[0].Count; i++)
             {
+                List<TaskService> taskServices = new List<TaskService>();
+
+                foreach (List<TaskService> list in listOfLists)
+                {
+                    TaskService taskService = list[i];
+                    taskServices.Add(taskService);
+                }
+
                 CompositionPlan country = new CompositionPlan
                 {
                     Id = i,
-                    TaskServices = new List<TaskService>
-                    {
-                        listOfLists[0][i],
-                        listOfLists[1][i]
-                    }
+                    TaskServices = taskServices
                 };
 
                 countries.Add(country);
-                
             }
 
             return countries;

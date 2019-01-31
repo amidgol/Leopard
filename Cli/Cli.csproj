@@ -8,6 +8,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Domain.Algorithms.Ica\Domain.Algorithms.Ica.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
+    <ProjectReference Include="..\Service\Service.csproj" />
   </ItemGroup>
 
 </Project>

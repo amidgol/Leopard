@@ -30,7 +30,7 @@ namespace Domain.Extensions
 
             List<double> maskList = new List<double>();
 
-            for (var index = 0; index < compositionPlan.TaskServices.Count; index++)
+            for (int index = 0; index < compositionPlan.TaskServices.Count; index++)
             {
                 maskList.Add((double) random.Next(0, 100) / 100);
             }

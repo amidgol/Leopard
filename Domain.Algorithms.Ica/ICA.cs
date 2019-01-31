@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using Domain.Algorithms.Ica.Extensions;
+using Domain.Algorithms.Ica.Models;
 using Domain.Extensions;
-using Domain.ICA;
 using Domain.Models;
 
 namespace Domain.Algorithms.Ica
@@ -29,11 +29,11 @@ namespace Domain.Algorithms.Ica
                 new System.IO.StreamWriter(@"C:\Users\Amid\Desktop\out.txt"))
             {
                 file.Flush();
-                while (empires.Count > 1 && iteration < 10000)
+                while (empires.Count > 1 && iteration < 1000)
                 {
                     foreach (Empire<CompositionPlan> empire in empires)
                     {
-                        empire.Assimilate(config.QualityAttributeWeights)
+                        empire.Assimilate(config.QualityAttributeWeights, input)
                             .UpdateAfterAssimilation()
                             .CalculateCost(_icaConfig.Zeta);
                     }
@@ -45,7 +45,7 @@ namespace Domain.Algorithms.Ica
                     string output =
                         $"iteration {iteration}," +
                         $" empires: {empires.Count}," +
-                        $" best solution:{empires.First().Imperialist}," +
+                       // $" best solution:{empires.First().Imperialist}," +
                         $" best cost:{empires.First().Imperialist.Cost}";
 
                     file.WriteLine($"{iteration},{empires.First().Imperialist.Cost}");
@@ -63,7 +63,7 @@ namespace Domain.Algorithms.Ica
 
         private IEnumerable<Empire<CompositionPlan>> CreateInitialEmpires(List<CompositionPlan> countries)
         {
-            foreach (var country in countries)
+            foreach (CompositionPlan country in countries)
             {
                 country.Cost = country.CalculateCost(_icaConfig.QualityAttributeWeights);
                 country.Power = 1 - country.Cost;
@@ -91,7 +91,8 @@ namespace Domain.Algorithms.Ica
 
                 imperialist.NormalizedPower = imperialist.Power / sum;
 
-                int coloniesCount = (int)(imperialist.NormalizedPower * _icaConfig.InitialColoniesCount);
+                int coloniesCount = (int)(imperialist.NormalizedPower *
+                                          (_icaConfig.CandidatesPerTask - _icaConfig.InitialEmpiresCount));
 
                 empire.Imperialist = imperialist;
                 empire.Colonies = countries.Skip(skipCount).Take(coloniesCount).ToList();
