@@ -37,7 +37,9 @@ namespace Cli
                 FileOffset = Convert.ToInt32(AppSettings("FileOffset").Value),
                 InitialEmpiresCount = Convert.ToInt32(AppSettings("ICA")
                     .GetSection("InitialEmpiresCount").Value),
-                Zeta = Convert.ToDouble(AppSettings("ICA").GetSection("Zeta").Value)
+                Zeta = Convert.ToDouble(AppSettings("ICA").GetSection("Zeta").Value),
+                RevolutionRate = Convert.ToDouble(AppSettings("ICA")
+                    .GetSection("RevolutionRate").Value)
             };
 
             return icaConfig;
@@ -93,96 +95,7 @@ namespace Cli
 
             return attributeWeights;
         }
-        private static CompositionRequest GenerateRequest(IcaConfig config, params QualityAttribute[] attributes)
-        {
-            List<TaskCandidateService> candidateServices = new List<TaskCandidateService>();
-
-            Random random = new Random();
-
-            TaskCandidateService weatherForecast = new TaskCandidateService
-            {
-                Task = new SingleTask { Title = "Weather Forecast" },
-                WebServices = new List<WebService>()
-            };
-
-            for (int i = 0; i < config.CandidatesPerTask; i++)
-            {
-                double a = (double)random.Next(5000, 10000) / 10000;
-                double b = (double)random.Next(5500, 10000) / 10000;
-                double c = random.Next(1, 5);
-
-                weatherForecast.WebServices.Add(new WebService
-                {
-                    Title = $"weather-{i}",
-                    QualityAttributeValues = new List<QualityAttributeValue>
-                    {
-                        new QualityAttributeValue
-                        {
-                            QualityAttribute = attributes[0],
-                            Value = a
-                        },
-                        new QualityAttributeValue
-                        {
-                            QualityAttribute = attributes[1],
-                            Value = b
-                        },
-                        new QualityAttributeValue
-                        {
-                            QualityAttribute = attributes[2],
-                            Value = c
-                        }
-                    }
-                });
-            }
-
-            TaskCandidateService stock = new TaskCandidateService
-            {
-                Task = new SingleTask { Title = "Stock Market" },
-                WebServices = new List<WebService>()
-            };
-
-            for (int i = 0; i < config.CandidatesPerTask; i++)
-            {
-                double a = (double)random.Next(50, 100) / 100;
-                double b = (double)random.Next(55, 100) / 100;
-                double c = random.Next(1, 5);
-
-                stock.WebServices.Add(new WebService
-                {
-                    Title = $"stock-{i}",
-                    QualityAttributeValues = new List<QualityAttributeValue>
-                    {
-                        new QualityAttributeValue
-                        {
-                            QualityAttribute = attributes[0],
-                            Value = a
-                        },
-                        new QualityAttributeValue
-                        {
-                            QualityAttribute = attributes[1],
-                            Value = b
-                        },
-                        new QualityAttributeValue
-                        {
-                            QualityAttribute = attributes[2],
-                            Value = c
-                        }
-                    }
-                });
-            }
-
-
-            CompositionRequest request = new CompositionRequest
-            {
-                TaskCandidateServices = new List<TaskCandidateService>
-               {
-                   stock,weatherForecast
-               }
-            };
-
-            return request;
-        }
-
+        
         private static IConfigurationSection AppSettings(string sectionName)
         {
             var builder = new ConfigurationBuilder()

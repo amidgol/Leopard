@@ -40,6 +40,8 @@ namespace Domain.Algorithms.Ica
 
                     empires.NormalizePowers().Compete();
 
+                    countries.ForEach(c=>c.Revolution(countries, _icaConfig.RevolutionRate));
+                    
                     empires.EliminatePowerlessEmpires();
 
                     string output =
