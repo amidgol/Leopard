@@ -5,6 +5,7 @@ using Domain;
 using Domain.Algorithms.Ica;
 using Domain.Enums;
 using Domain.Models;
+using Microsoft.Extensions.Configuration;
 using Service.RequestGenerators;
 
 namespace Cli
@@ -13,68 +14,7 @@ namespace Cli
     {
         static void Main(string[] args)
         {
-            List<SingleTask> tasks = new List<SingleTask>
-            {
-                new SingleTask{Title = "A"},
-                new SingleTask{Title = "B"},
-                new SingleTask{Title = "C"},
-                new SingleTask{Title = "D"},
-                new SingleTask{Title = "E"},
-                new SingleTask{Title = "F"},
-                new SingleTask{Title = "G"},
-                new SingleTask{Title = "H"}
-            };
-            
-            QualityAttribute availability = new QualityAttribute
-            {
-                Title = "Availability",
-                Type = QualityAttributeType.BenefitOriented
-            };
-            QualityAttribute reliability = new QualityAttribute
-            {
-                Title = "Reliability",
-                Type = QualityAttributeType.BenefitOriented
-            };
-            QualityAttribute throughput = new QualityAttribute
-            {
-                Title = "Throughput",
-                Type = QualityAttributeType.BenefitOriented
-
-            };
-            QualityAttribute responseTime = new QualityAttribute
-            {
-                Title = "ResponseTime",
-                Type = QualityAttributeType.CostOriented
-            };
-
-            IcaConfig icaConfig = new IcaConfig
-            {
-                Tasks = tasks,
-                DataSetFilePath = @"C:\Users\Amid\Desktop\QWS_Dataset_V2.txt",
-                QualityAttributeWeights = new List<QualityAttributeWeight>
-                {
-                    new QualityAttributeWeight
-                    {
-                        QualityAttribute = availability,
-                        Weight = 0.3
-                    },
-                    new QualityAttributeWeight
-                    {
-                        QualityAttribute = reliability,
-                        Weight = 0.3
-                    },
-                    new QualityAttributeWeight
-                    {
-                        QualityAttribute = throughput,
-                        Weight = 0.2
-                    },
-                    new QualityAttributeWeight
-                    {
-                        QualityAttribute = responseTime,
-                        Weight = 0.2
-                    }
-                }
-            };
+            IcaConfig icaConfig = GetIcaConfig();
 
             Ica ica = new Ica(icaConfig);
 
@@ -86,6 +26,73 @@ namespace Cli
             Console.ReadLine();
         }
 
+        private static IcaConfig GetIcaConfig()
+        {
+            IcaConfig icaConfig = new IcaConfig
+            {
+                Tasks = GetTasks(),
+                DataSetFilePath = AppSettings("DataSetFilePath").Value,
+                QualityAttributeWeights = GetQualityAttributeWeights(),
+                CandidatesPerTask = Convert.ToInt32(AppSettings("CandidatesPerTask").Value),
+                FileOffset = Convert.ToInt32(AppSettings("FileOffset").Value),
+                InitialEmpiresCount = Convert.ToInt32(AppSettings("ICA")
+                    .GetSection("InitialEmpiresCount").Value),
+                Zeta = Convert.ToDouble(AppSettings("ICA").GetSection("Zeta").Value)
+            };
+
+            return icaConfig;
+        }
+
+        private static List<SingleTask> GetTasks()
+        {
+            List<SingleTask> tasks = new List<SingleTask>();
+
+            for (int i = 0;
+                i < Convert.ToInt32(AppSettings("NumberOfTasks").Value);
+                i++)
+            {
+                tasks.Add(new SingleTask { Title = $"Task-{i}" });
+            }
+
+            return tasks;
+        }
+
+        private static List<QualityAttributeWeight> GetQualityAttributeWeights()
+        {
+            List<QualityAttributeWeight> attributeWeights = new List<QualityAttributeWeight>();
+
+            foreach (IConfigurationSection section
+                in AppSettings("QualityAttributeWeights")
+                    .GetSection("CostOriented").GetChildren())
+            {
+                attributeWeights.Add(new QualityAttributeWeight
+                {
+                    QualityAttribute = new QualityAttribute
+                    {
+                        Title = section.Key,
+                        Type = QualityAttributeType.CostOriented
+                    },
+                    Weight = Convert.ToDouble(section.Value)
+                });
+            }
+
+            foreach (IConfigurationSection section
+                in AppSettings("QualityAttributeWeights")
+                    .GetSection("BenefitOriented").GetChildren())
+            {
+                attributeWeights.Add(new QualityAttributeWeight
+                {
+                    QualityAttribute = new QualityAttribute
+                    {
+                        Title = section.Key,
+                        Type = QualityAttributeType.BenefitOriented
+                    },
+                    Weight = Convert.ToDouble(section.Value)
+                });
+            }
+
+            return attributeWeights;
+        }
         private static CompositionRequest GenerateRequest(IcaConfig config, params QualityAttribute[] attributes)
         {
             List<TaskCandidateService> candidateServices = new List<TaskCandidateService>();
@@ -167,13 +174,22 @@ namespace Cli
 
             CompositionRequest request = new CompositionRequest
             {
-               TaskCandidateServices  = new List<TaskCandidateService>
+                TaskCandidateServices = new List<TaskCandidateService>
                {
                    stock,weatherForecast
                }
             };
 
             return request;
+        }
+
+        private static IConfigurationSection AppSettings(string sectionName)
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+
+            return builder.Build().GetSection(sectionName);
         }
     }
 }
