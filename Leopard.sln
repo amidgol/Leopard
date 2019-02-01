@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Leopard.Cli", "Leopard.Cli\Leopard.Cli.csproj", "{BF0BCB14-9FAF-45CA-8FC5-31277CE51414}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Leopard.Domain", "Leopard.Domain\Leopard.Domain.csproj", "{BF41EC9B-EE6E-49B8-B630-961979556793}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Leopard.Algorithms.Ica", "Leopard.Algorithms.Ica\Leopard.Algorithms.Ica.csproj", "{5C188EE1-13E1-461D-B9A2-0436E1BF2415}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Leopard.Algorithms.Pso", "Leopard.Algorithms.Pso\Leopard.Algorithms.Pso.csproj", "{6670732A-8DC5-4961-970E-C36A9385709F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Leopard.RequestGeneration", "Leopard.RequestGeneration\Leopard.RequestGeneration.csproj", "{1556D9B9-711C-491D-AAE1-710375FF658B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BF0BCB14-9FAF-45CA-8FC5-31277CE51414}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF0BCB14-9FAF-45CA-8FC5-31277CE51414}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF0BCB14-9FAF-45CA-8FC5-31277CE51414}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF0BCB14-9FAF-45CA-8FC5-31277CE51414}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF41EC9B-EE6E-49B8-B630-961979556793}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF41EC9B-EE6E-49B8-B630-961979556793}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF41EC9B-EE6E-49B8-B630-961979556793}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF41EC9B-EE6E-49B8-B630-961979556793}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C188EE1-13E1-461D-B9A2-0436E1BF2415}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C188EE1-13E1-461D-B9A2-0436E1BF2415}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C188EE1-13E1-461D-B9A2-0436E1BF2415}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C188EE1-13E1-461D-B9A2-0436E1BF2415}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6670732A-8DC5-4961-970E-C36A9385709F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6670732A-8DC5-4961-970E-C36A9385709F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6670732A-8DC5-4961-970E-C36A9385709F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6670732A-8DC5-4961-970E-C36A9385709F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1556D9B9-711C-491D-AAE1-710375FF658B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1556D9B9-711C-491D-AAE1-710375FF658B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1556D9B9-711C-491D-AAE1-710375FF658B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1556D9B9-711C-491D-AAE1-710375FF658B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {29A31D76-B0EF-4CE7-B5B1-D6BBBF623E41}
+	EndGlobalSection
+EndGlobal
