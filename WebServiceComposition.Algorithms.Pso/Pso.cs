@@ -11,9 +11,9 @@ namespace WebServiceComposition.Algorithms.Pso
 {
     public class Pso : IAlgorithm
     {
-        public CompositionPlan Execute(CompositionRequest input)
+        public CompositionPlan Execute(CompositionRequest input, Action<string> display)
         {
-            Console.ResetColor();
+            display("PSO started...\n");
 
             List<CompositionPlan> particles = input.CreateInitialPopulation().ToList();
 
@@ -27,7 +27,7 @@ namespace WebServiceComposition.Algorithms.Pso
                 new System.IO.StreamWriter(input.Config.OutputFile))
             {
                 file.Flush();
-                for (int i = 0; i < 1000; i++)
+                for (int i = 0; i < input.Config.MaxIteration; i++)
                 {
                     particles.ForEach(p =>
                     {
@@ -35,13 +35,12 @@ namespace WebServiceComposition.Algorithms.Pso
                         gBest = particles.GetGlobalBest();
                     });
 
-                    Console.WriteLine($"iteration: {i}, Cost: {gBest.Cost}");
+                    display($"iteration: {i}, Cost: {gBest.Cost}");
                     file.WriteLine($"{i},{gBest.Cost}");
                 }
             }
 
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"Best Solution: {gBest}");
+            display($"PSO Best Solution: {gBest}");
 
             return gBest;
         }

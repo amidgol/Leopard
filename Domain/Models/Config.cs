@@ -10,5 +10,6 @@ namespace WebServiceComposition.Domain.Models
         public string DataSetFilePath { get; set; } = @"C:\Users\Amid\Desktop\QWS_Dataset_v2";
         public int FileOffset { get; set; } = 20;
         public string OutputFile { get; set; }
+        public int MaxIteration { get; set; } = 800;
     }
 }

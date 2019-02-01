@@ -11,9 +11,9 @@ namespace WebServiceComposition.Algorithms.Ica
 {
     public class Ica : IAlgorithm
     {
-        public CompositionPlan Execute(CompositionRequest input)
+        public CompositionPlan Execute(CompositionRequest input, Action<string> display)
         {
-            Console.ResetColor();
+            display("ICA started...\n");
 
             List<CompositionPlan> countries = input.CreateInitialPopulation().ToList();
 
@@ -25,7 +25,7 @@ namespace WebServiceComposition.Algorithms.Ica
                 new System.IO.StreamWriter(input.Config.OutputFile))
             {
                 file.Flush();
-                while (empires.Count > 1 && iteration < 1000)
+                while (empires.Count > 1 && iteration < input.Config.MaxIteration)
                 {
                     foreach (Empire<CompositionPlan> empire in empires)
                     {
@@ -48,13 +48,12 @@ namespace WebServiceComposition.Algorithms.Ica
 
                     file.WriteLine($"{iteration},{empires.First().Imperialist.Cost}");
 
-                    Console.WriteLine(output);
+                    display(output);
                     iteration++;
                 }
             }
 
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"Cost: {empires.First().Imperialist.Cost}");
+            display($"ICA Best Cost: {empires.First().Imperialist.Cost}");
 
             return empires.First().Imperialist;
         }

@@ -16,21 +16,28 @@ namespace WebServiceComposition.Cli
         static void Main(string[] args)
         {
             List<Action> actions = new List<Action>();
+            void DisplayAction(string s) => Console.WriteLine(s);
 
             IcaConfig icaConfig = GetIcaConfig();
             PsoConfig psoConfig = GetPsoConfig();
 
-            Ica ica = new Ica();
-
             IRequestGenerator requestGenerator = new QwsRequestGenerator();
+
+            Ica ica = new Ica();
             CompositionRequest icaRequest = requestGenerator.Generate(icaConfig);
-            actions.Add(() => ica.Execute(icaRequest));
+            actions.Add(() => ica.Execute(icaRequest, DisplayAction));
 
             Pso pso = new Pso();
             CompositionRequest psoRequest = requestGenerator.Generate(psoConfig);
-            actions.Add(() => pso.Execute(psoRequest));
+            actions.Add(() => pso.Execute(psoRequest, DisplayAction));
 
-            actions.ForEach(a=>a.Invoke());
+            for (var i = 0; i < actions.Count; i++)
+            {
+                Console.ForegroundColor = i % 2 == 0 ? ConsoleColor.Cyan : ConsoleColor.DarkYellow;
+
+                var a = actions[i];
+                a.Invoke();
+            }
 
             Console.ReadLine();
         }
@@ -50,7 +57,8 @@ namespace WebServiceComposition.Cli
                 DataSetFilePath = AppSettings("DataSetFilePath").Value,
                 QualityAttributeWeights = GetQualityAttributeWeights(),
                 CandidatesPerTask = Convert.ToInt32(AppSettings("CandidatesPerTask").Value),
-                FileOffset = Convert.ToInt32(AppSettings("FileOffset").Value)
+                FileOffset = Convert.ToInt32(AppSettings("FileOffset").Value),
+                MaxIteration = Convert.ToInt32(AppSettings("MaxIteration").Value)
             };
 
             return icaConfig;
@@ -68,7 +76,8 @@ namespace WebServiceComposition.Cli
                 DataSetFilePath = AppSettings("DataSetFilePath").Value,
                 QualityAttributeWeights = GetQualityAttributeWeights(),
                 CandidatesPerTask = Convert.ToInt32(AppSettings("CandidatesPerTask").Value),
-                FileOffset = Convert.ToInt32(AppSettings("FileOffset").Value)
+                FileOffset = Convert.ToInt32(AppSettings("FileOffset").Value),
+                MaxIteration = Convert.ToInt32(AppSettings("MaxIteration").Value)
             };
 
             return psoConfig;
