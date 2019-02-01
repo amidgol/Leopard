@@ -34,8 +34,9 @@ namespace WebServiceComposition.Algorithms.Pso
                 {
                     p.Move(gBest, config);
                     gBest = particles.GetGlobalBest();
-                    Console.WriteLine($"iteration: {i}, Cost: {gBest.Cost}");
                 });
+                Console.WriteLine($"iteration: {i}, Cost: {gBest.Cost}");
+
             }
 
             Console.ForegroundColor = ConsoleColor.Green;

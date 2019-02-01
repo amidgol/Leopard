@@ -11,14 +11,7 @@ namespace WebServiceComposition.Domain.Models
         public CompositionPlan PBest { get; set; }//todo
         public override string ToString()
         {
-            string result = "";
-
-            foreach (TaskService taskService in TaskServices)
-            {
-                result += $"{taskService.WebService.Title} - ";
-            }
-
-            return $"{result} Cost: {Cost}";
+            return $"Cost: {Cost}";
         }
     }
 }
