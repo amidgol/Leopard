@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Microsoft.Extensions.Configuration;
 using WebServiceComposition.Algorithms.Ica;
+using WebServiceComposition.Algorithms.Pso;
 using WebServiceComposition.Domain;
 using WebServiceComposition.Domain.Enums;
 using WebServiceComposition.Domain.Models;
@@ -14,14 +15,23 @@ namespace WebServiceComposition.Cli
     {
         static void Main(string[] args)
         {
-            IcaConfig icaConfig = GetIcaConfig();
+            //IcaConfig icaConfig = GetIcaConfig();
 
-            Ica ica = new Ica(icaConfig);
+            //Ica ica = new Ica(icaConfig);
 
+            //IRequestGenerator requestGenerator = new QwsRequestGenerator();
+            //CompositionRequest request = requestGenerator.Generate(icaConfig);
+
+            //ica.Execute(request, icaConfig);
+
+            PsoConfig psoConfig = GetPsoConfig();
+
+            Pso pso = new Pso(psoConfig);
+            
             IRequestGenerator requestGenerator = new QwsRequestGenerator();
-            CompositionRequest request = requestGenerator.Generate(icaConfig);
+            CompositionRequest request = requestGenerator.Generate(psoConfig);
 
-            ica.Execute(request, icaConfig);
+            pso.Execute(request, psoConfig);
 
             Console.ReadLine();
         }
@@ -43,6 +53,22 @@ namespace WebServiceComposition.Cli
             };
 
             return icaConfig;
+        }
+
+        private static PsoConfig GetPsoConfig()
+        {
+            PsoConfig psoConfig = new PsoConfig()
+            {
+                C1 = Convert.ToDouble(AppSettings("PSO").GetSection("C1").Value),
+                C2 = Convert.ToDouble(AppSettings("PSO").GetSection("C2").Value),
+                Tasks = GetTasks(),
+                DataSetFilePath = AppSettings("DataSetFilePath").Value,
+                QualityAttributeWeights = GetQualityAttributeWeights(),
+                CandidatesPerTask = Convert.ToInt32(AppSettings("CandidatesPerTask").Value),
+                FileOffset = Convert.ToInt32(AppSettings("FileOffset").Value)
+            };
+
+            return psoConfig;
         }
 
         private static List<SingleTask> GetTasks()

@@ -19,7 +19,7 @@ namespace WebServiceComposition.Algorithms.Ica
         }
         public CompositionPlan Execute(CompositionRequest input, IcaConfig config)
         {
-            List<CompositionPlan> countries = input.CreateInitialCountries().ToList();
+            List<CompositionPlan> countries = input.CreateInitialPopulation().ToList();
 
             List<Empire<CompositionPlan>> empires = CreateInitialEmpires(countries).ToList();
 

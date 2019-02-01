@@ -7,9 +7,9 @@ namespace WebServiceComposition.Domain.Extensions
 {
     public static class CompositionRequestExtensions
     {
-        public static IEnumerable<CompositionPlan> CreateInitialCountries(this CompositionRequest request)
+        public static IEnumerable<CompositionPlan> CreateInitialPopulation(this CompositionRequest request)
         {
-            List<CompositionPlan> countries = new List<CompositionPlan>();
+            List<CompositionPlan> compositionPlans = new List<CompositionPlan>();
 
             Random random = new Random();
 
@@ -54,10 +54,10 @@ namespace WebServiceComposition.Domain.Extensions
                     TaskServices = taskServices
                 };
 
-                countries.Add(country);
+                compositionPlans.Add(country);
             }
 
-            return countries;
+            return compositionPlans;
         }
     }
 }

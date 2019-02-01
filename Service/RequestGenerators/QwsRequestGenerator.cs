@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using WebServiceComposition.Domain;
+using WebServiceComposition.Domain.Extensions;
 using WebServiceComposition.Domain.Models;
 
 namespace WebServiceCompositionService.RequestGenerators

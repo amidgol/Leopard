@@ -23,7 +23,8 @@ namespace WebServiceComposition.Domain.Extensions
             return cost / compositionPlan.TaskServices.Count;
         }
 
-        public static List<double> GetMask(this CompositionPlan compositionPlan)
+        public static List<double> GetMask(this CompositionPlan compositionPlan,
+            int min = 0, int max = 100)
         {
             Random random = new Random();
 
@@ -31,7 +32,7 @@ namespace WebServiceComposition.Domain.Extensions
 
             for (int index = 0; index < compositionPlan.TaskServices.Count; index++)
             {
-                maskList.Add((double) random.Next(0, 100) / 100);
+                maskList.Add((double) random.Next(min, max) / 100);
             }
 
             return maskList;

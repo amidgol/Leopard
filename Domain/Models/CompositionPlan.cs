@@ -8,7 +8,7 @@ namespace WebServiceComposition.Domain.Models
         public double Cost { get; set; }
         public double  Power { get; set; }
         public double  NormalizedPower { get; set; }
-
+        public CompositionPlan PBest { get; set; }//todo
         public override string ToString()
         {
             string result = "";

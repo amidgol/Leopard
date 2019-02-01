@@ -15,6 +15,7 @@
     <ProjectReference Include="..\Domain.Algorithms.Ica\WebServiceComposition.Algorithms.Ica.csproj" />
     <ProjectReference Include="..\Domain\WebServiceComposition.Domain.csproj" />
     <ProjectReference Include="..\Service\WebServiceCompositionService.csproj" />
+    <ProjectReference Include="..\WebServiceComposition.Algorithms.Pso\WebServiceComposition.Algorithms.Pso.csproj" />
   </ItemGroup>
 
   <ItemGroup>
