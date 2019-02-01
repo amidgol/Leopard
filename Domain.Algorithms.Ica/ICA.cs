@@ -9,38 +9,34 @@ using WebServiceComposition.Domain.Models;
 
 namespace WebServiceComposition.Algorithms.Ica
 {
-    public class Ica : IAlgorithm<CompositionRequest, IcaConfig, CompositionPlan>
+    public class Ica : IAlgorithm
     {
-        private readonly IcaConfig _icaConfig;
+        public CompositionPlan Execute(CompositionRequest input)
+        {
+            Console.ResetColor();
 
-        public Ica(IcaConfig icaConfig)
-        {
-            _icaConfig = icaConfig;
-        }
-        public CompositionPlan Execute(CompositionRequest input, IcaConfig config)
-        {
             List<CompositionPlan> countries = input.CreateInitialPopulation().ToList();
 
-            List<Empire<CompositionPlan>> empires = CreateInitialEmpires(countries).ToList();
+            List<Empire<CompositionPlan>> empires = CreateInitialEmpires(countries, ((IcaConfig)(input.Config))).ToList();
 
             double iteration = 1;
 
             using (System.IO.StreamWriter file =
-                new System.IO.StreamWriter(@"C:\Users\Amid\Desktop\ica.txt"))
+                new System.IO.StreamWriter(input.Config.OutputFile))
             {
                 file.Flush();
                 while (empires.Count > 1 && iteration < 1000)
                 {
                     foreach (Empire<CompositionPlan> empire in empires)
                     {
-                        empire.Assimilate(config.QualityAttributeWeights, input)
+                        empire.Assimilate(input.Config.QualityAttributeWeights, input)
                             .UpdateAfterAssimilation()
-                            .CalculateCost(_icaConfig.Zeta);
+                            .CalculateCost(((IcaConfig)(input.Config)).Zeta);
                     }
 
                     empires.NormalizePowers().Compete();
 
-                    countries.ForEach(c=>c.Revolution(countries, _icaConfig.RevolutionRate));
+                    countries.ForEach(c=>c.Revolution(countries, ((IcaConfig)(input.Config)).RevolutionRate));
                     
                     empires.EliminatePowerlessEmpires();
 
@@ -63,18 +59,18 @@ namespace WebServiceComposition.Algorithms.Ica
             return empires.First().Imperialist;
         }
 
-        private IEnumerable<Empire<CompositionPlan>> CreateInitialEmpires(List<CompositionPlan> countries)
+        private IEnumerable<Empire<CompositionPlan>> CreateInitialEmpires(List<CompositionPlan> countries, IcaConfig config)
         {
             foreach (CompositionPlan country in countries)
             {
-                country.Cost = country.CalculateCost(_icaConfig.QualityAttributeWeights);
+                country.Cost = country.CalculateCost(config.QualityAttributeWeights);
                 country.Power = 1 - country.Cost;
             }
 
             countries = countries.OrderBy(x => x.Cost).ToList();
 
             IEnumerable<CompositionPlan> initialImperialists = countries
-                .Take(_icaConfig.InitialEmpiresCount).ToList();
+                .Take(config.InitialEmpiresCount).ToList();
 
             double sum = 0;
             foreach (CompositionPlan imperialist in initialImperialists)
@@ -85,7 +81,7 @@ namespace WebServiceComposition.Algorithms.Ica
             List<Empire<CompositionPlan>> empires = new List<Empire<CompositionPlan>>
                 (initialImperialists.Count());
 
-            int skipCount = _icaConfig.InitialEmpiresCount;
+            int skipCount = config.InitialEmpiresCount;
 
             foreach (CompositionPlan imperialist in initialImperialists)
             {
@@ -94,7 +90,7 @@ namespace WebServiceComposition.Algorithms.Ica
                 imperialist.NormalizedPower = imperialist.Power / sum;
 
                 int coloniesCount = (int)(imperialist.NormalizedPower *
-                                          (_icaConfig.CandidatesPerTask - _icaConfig.InitialEmpiresCount));
+                                          (config.CandidatesPerTask - config.InitialEmpiresCount));
 
                 empire.Imperialist = imperialist;
                 empire.Colonies = countries.Skip(skipCount).Take(coloniesCount).ToList();

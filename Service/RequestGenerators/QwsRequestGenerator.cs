@@ -106,7 +106,8 @@ namespace WebServiceCompositionService.RequestGenerators
 
             return new CompositionRequest
             {
-                TaskCandidateServices = taskCandidateServices
+                TaskCandidateServices = taskCandidateServices,
+                Config = config
             };
         }
 

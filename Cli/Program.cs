@@ -15,23 +15,22 @@ namespace WebServiceComposition.Cli
     {
         static void Main(string[] args)
         {
-            IcaConfig icaConfig = GetIcaConfig();
+            List<Action> actions = new List<Action>();
 
-            Ica ica = new Ica(icaConfig);
+            IcaConfig icaConfig = GetIcaConfig();
+            PsoConfig psoConfig = GetPsoConfig();
+
+            Ica ica = new Ica();
 
             IRequestGenerator requestGenerator = new QwsRequestGenerator();
-            CompositionRequest request = requestGenerator.Generate(icaConfig);
+            CompositionRequest icaRequest = requestGenerator.Generate(icaConfig);
+            actions.Add(() => ica.Execute(icaRequest));
 
-            ica.Execute(request, icaConfig);
+            Pso pso = new Pso();
+            CompositionRequest psoRequest = requestGenerator.Generate(psoConfig);
+            actions.Add(() => pso.Execute(psoRequest));
 
-            //PsoConfig psoConfig = GetPsoConfig();
-
-            //Pso pso = new Pso(psoConfig);
-            
-            //IRequestGenerator requestGenerator = new QwsRequestGenerator();
-            //CompositionRequest request = requestGenerator.Generate(psoConfig);
-
-            //pso.Execute(request, psoConfig);
+            actions.ForEach(a=>a.Invoke());
 
             Console.ReadLine();
         }
@@ -40,16 +39,18 @@ namespace WebServiceComposition.Cli
         {
             IcaConfig icaConfig = new IcaConfig
             {
-                Tasks = GetTasks(),
-                DataSetFilePath = AppSettings("DataSetFilePath").Value,
-                QualityAttributeWeights = GetQualityAttributeWeights(),
-                CandidatesPerTask = Convert.ToInt32(AppSettings("CandidatesPerTask").Value),
-                FileOffset = Convert.ToInt32(AppSettings("FileOffset").Value),
                 InitialEmpiresCount = Convert.ToInt32(AppSettings("ICA")
                     .GetSection("InitialEmpiresCount").Value),
                 Zeta = Convert.ToDouble(AppSettings("ICA").GetSection("Zeta").Value),
                 RevolutionRate = Convert.ToDouble(AppSettings("ICA")
-                    .GetSection("RevolutionRate").Value)
+                    .GetSection("RevolutionRate").Value),
+                OutputFile = AppSettings("ICA").GetSection("OutputFile").Value,
+
+                Tasks = GetTasks(),
+                DataSetFilePath = AppSettings("DataSetFilePath").Value,
+                QualityAttributeWeights = GetQualityAttributeWeights(),
+                CandidatesPerTask = Convert.ToInt32(AppSettings("CandidatesPerTask").Value),
+                FileOffset = Convert.ToInt32(AppSettings("FileOffset").Value)
             };
 
             return icaConfig;
@@ -61,6 +62,8 @@ namespace WebServiceComposition.Cli
             {
                 C1 = Convert.ToDouble(AppSettings("PSO").GetSection("C1").Value),
                 C2 = Convert.ToDouble(AppSettings("PSO").GetSection("C2").Value),
+                OutputFile = AppSettings("PSO").GetSection("OutputFile").Value,
+
                 Tasks = GetTasks(),
                 DataSetFilePath = AppSettings("DataSetFilePath").Value,
                 QualityAttributeWeights = GetQualityAttributeWeights(),

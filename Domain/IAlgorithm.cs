@@ -1,7 +1,9 @@
-﻿namespace WebServiceComposition.Domain
+﻿using WebServiceComposition.Domain.Models;
+
+namespace WebServiceComposition.Domain
 {
-    public interface IAlgorithm<in T, in TConfig, out TResult>
+    public interface IAlgorithm
     {
-        TResult Execute(T input, TConfig config);
+        CompositionPlan Execute(CompositionRequest request);
     }
 }
