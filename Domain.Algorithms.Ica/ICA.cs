@@ -26,7 +26,7 @@ namespace WebServiceComposition.Algorithms.Ica
             double iteration = 1;
 
             using (System.IO.StreamWriter file =
-                new System.IO.StreamWriter(@"C:\Users\Amid\Desktop\out.txt"))
+                new System.IO.StreamWriter(@"C:\Users\Amid\Desktop\ica.txt"))
             {
                 file.Flush();
                 while (empires.Count > 1 && iteration < 1000)
