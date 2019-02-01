@@ -19,22 +19,24 @@ namespace WebServiceComposition.Algorithms.Pso.Extensions
         {
             int columnsToBeMaskedLocally = (int)(compositionPlan.TaskServices.Count * psoConfig.C1);
             int columnsToBeMaskedGlobally = compositionPlan.TaskServices.Count - columnsToBeMaskedLocally;
-            
-            Random r = new Random();
-            bool directionLtr = r.Next(0, 1) == 1;
 
-            compositionPlan.MoveTowardParticle(compositionPlan.PBest,columnsToBeMaskedLocally, directionLtr)
-                .MoveTowardParticle(gBest, columnsToBeMaskedGlobally, !directionLtr);
+            Random r = new Random();
+            int mod = DateTime.Now.Millisecond % 2;
+            bool directionLtr = mod == 1;
+
+            compositionPlan.MoveTowardParticle(compositionPlan.PBest, columnsToBeMaskedLocally, directionLtr);
+
+            compositionPlan.MoveTowardParticle(gBest, columnsToBeMaskedGlobally, !directionLtr);
 
             compositionPlan.UpdatePBest(psoConfig);
 
             return compositionPlan;
         }
 
-        private static CompositionPlan UpdatePBest(this CompositionPlan compositionPlan, 
+        private static CompositionPlan UpdatePBest(this CompositionPlan compositionPlan,
             PsoConfig psoConfig)
         {
-            compositionPlan.CalculateCost(psoConfig.QualityAttributeWeights);
+            compositionPlan.Cost = compositionPlan.CalculateCost(psoConfig.QualityAttributeWeights);
 
             if (compositionPlan.Cost < compositionPlan.PBest.Cost)
                 compositionPlan.PBest = compositionPlan;
@@ -60,7 +62,8 @@ namespace WebServiceComposition.Algorithms.Pso.Extensions
             }
             else
             {
-                for (int i = compositionPlan.TaskServices.Count-1; i > columnsToBeMasked; i--)
+                for (int i = compositionPlan.TaskServices.Count - 1;
+                    i > compositionPlan.TaskServices.Count - columnsToBeMasked; i--)
                 {
                     if (mask[i] > compositionPlan.TaskServices[i].WebService.Cost)
                     {
