@@ -15,23 +15,23 @@ namespace WebServiceComposition.Cli
     {
         static void Main(string[] args)
         {
-            //IcaConfig icaConfig = GetIcaConfig();
+            IcaConfig icaConfig = GetIcaConfig();
 
-            //Ica ica = new Ica(icaConfig);
+            Ica ica = new Ica(icaConfig);
 
-            //IRequestGenerator requestGenerator = new QwsRequestGenerator();
-            //CompositionRequest request = requestGenerator.Generate(icaConfig);
-
-            //ica.Execute(request, icaConfig);
-
-            PsoConfig psoConfig = GetPsoConfig();
-
-            Pso pso = new Pso(psoConfig);
-            
             IRequestGenerator requestGenerator = new QwsRequestGenerator();
-            CompositionRequest request = requestGenerator.Generate(psoConfig);
+            CompositionRequest request = requestGenerator.Generate(icaConfig);
 
-            pso.Execute(request, psoConfig);
+            ica.Execute(request, icaConfig);
+
+            //PsoConfig psoConfig = GetPsoConfig();
+
+            //Pso pso = new Pso(psoConfig);
+            
+            //IRequestGenerator requestGenerator = new QwsRequestGenerator();
+            //CompositionRequest request = requestGenerator.Generate(psoConfig);
+
+            //pso.Execute(request, psoConfig);
 
             Console.ReadLine();
         }

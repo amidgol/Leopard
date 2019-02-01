@@ -9,7 +9,7 @@ using WebServiceComposition.Domain.Models;
 
 namespace WebServiceComposition.Algorithms.Pso
 {
-    public class Pso:IAlgorithm<CompositionRequest, PsoConfig, CompositionPlan>
+    public class Pso : IAlgorithm<CompositionRequest, PsoConfig, CompositionPlan>
     {
         private readonly PsoConfig _psoConfig;
 
@@ -22,21 +22,26 @@ namespace WebServiceComposition.Algorithms.Pso
         {
             List<CompositionPlan> particles = input.CreateInitialPopulation().ToList();
 
-            particles.ForEach(p=>p.PBest=p);
+            particles.ForEach(p => p.PBest = p);
 
-            particles.ForEach(p=>p.Cost=p.CalculateCost(config.QualityAttributeWeights));
+            particles.ForEach(p => p.Cost = p.CalculateCost(config.QualityAttributeWeights));
 
             CompositionPlan gBest = particles.GetGlobalBest();
 
-            for (int i = 0; i < 500; i++)
+            using (System.IO.StreamWriter file =
+                new System.IO.StreamWriter(@"C:\Users\Amid\Desktop\pso.txt"))
             {
-                particles.ForEach(p=>
+                file.Flush();
+                for (int i = 0; i < 1000; i++)
                 {
-                    p.Move(gBest, config);
-                    gBest = particles.GetGlobalBest();
-                });
-                Console.WriteLine($"iteration: {i}, Cost: {gBest.Cost}");
-
+                    particles.ForEach(p =>
+                    {
+                        p.Move(gBest, config);
+                        gBest = particles.GetGlobalBest();
+                    });
+                    Console.WriteLine($"iteration: {i}, Cost: {gBest.Cost}");
+                    file.WriteLine($"{i},{gBest.Cost}");
+                }
             }
 
             Console.ForegroundColor = ConsoleColor.Green;

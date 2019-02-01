@@ -54,7 +54,7 @@ namespace WebServiceComposition.Algorithms.Pso.Extensions
             {
                 for (int i = 0; i < columnsToBeMasked; i++)
                 {
-                    if (mask[i] > compositionPlan.TaskServices[i].WebService.Cost)
+                    if (mask[i] < compositionPlan.TaskServices[i].WebService.Cost && DateTime.Now.Millisecond%2==0)
                     {
                         compositionPlan.TaskServices[i].WebService = target.TaskServices[i].WebService;
                     }
@@ -65,7 +65,7 @@ namespace WebServiceComposition.Algorithms.Pso.Extensions
                 for (int i = compositionPlan.TaskServices.Count - 1;
                     i > compositionPlan.TaskServices.Count - columnsToBeMasked; i--)
                 {
-                    if (mask[i] > compositionPlan.TaskServices[i].WebService.Cost)
+                    if (mask[i] < compositionPlan.TaskServices[i].WebService.Cost && DateTime.Now.Millisecond % 2 == 0)
                     {
                         compositionPlan.TaskServices[i].WebService = target.TaskServices[i].WebService;
                     }
