@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using WebServiceComposition.Domain.Enums;
 using WebServiceComposition.Domain.Models;
 
 namespace WebServiceComposition.Domain.Extensions
@@ -16,7 +17,15 @@ namespace WebServiceComposition.Domain.Extensions
                 double weight = weights.First(x => x.QualityAttribute.Title
                     .Equals(attributeValue.QualityAttribute.Title)).Weight;
 
-                cost += weight * attributeValue.GetNormalizedValue();
+                if (attributeValue.QualityAttribute.Type
+                    .Equals(QualityAttributeType.CostOriented))
+                {
+                    cost += weight * attributeValue.GetNormalizedValue();
+                }
+                else
+                {
+                    cost += weight * (1 - attributeValue.GetNormalizedValue());
+                }
             }
 
             return cost;
