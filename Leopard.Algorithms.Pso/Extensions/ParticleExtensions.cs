@@ -14,11 +14,11 @@ namespace Leopard.Algorithms.Pso.Extensions
         }
 
         public static CompositionPlan Move(this CompositionPlan compositionPlan,
-            CompositionPlan gBest, PsoConfig psoConfig)
+            CompositionPlan gBest, PsoConfig psoConfig, List<TaskCandidateService> taskCandidateServices)
         {
             int columnsToBeMaskedLocally = (int)(compositionPlan.TaskServices.Count * psoConfig.C1);
             int columnsToBeMaskedGlobally = compositionPlan.TaskServices.Count - columnsToBeMaskedLocally;
-
+            
             Random r = new Random();
             int mod = DateTime.Now.Millisecond % 2;
             bool directionLtr = mod == 1;
@@ -53,7 +53,7 @@ namespace Leopard.Algorithms.Pso.Extensions
             {
                 for (int i = 0; i < columnsToBeMasked; i++)
                 {
-                    if (mask[i] < compositionPlan.TaskServices[i].WebService.Cost && DateTime.Now.Millisecond%2==0)
+                    if (mask[i] < compositionPlan.TaskServices[i].WebService.Cost && DateTime.Now.Millisecond % 2 == 0)
                     {
                         compositionPlan.TaskServices[i].WebService = target.TaskServices[i].WebService;
                     }

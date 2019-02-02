@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Leopard.Algorithms.Dpso\Leopard.Algorithms.Dpso.csproj" />
     <ProjectReference Include="..\Leopard.Algorithms.Ica\Leopard.Algorithms.Ica.csproj" />
     <ProjectReference Include="..\Leopard.Algorithms.Pso\Leopard.Algorithms.Pso.csproj" />
     <ProjectReference Include="..\Leopard.Domain\Leopard.Domain.csproj" />

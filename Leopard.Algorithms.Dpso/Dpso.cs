@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Leopard.Algorithms.Pso.Extensions;
+using Leopard.Algorithms.Dpso.Extensions;
 using Leopard.Domain;
 using Leopard.Domain.Extensions;
 using Leopard.Domain.Models;
 
-namespace Leopard.Algorithms.Pso
+namespace Leopard.Algorithms.Dpso
 {
-    public class Pso : IAlgorithm
+    public class Dpso:IAlgorithm
     {
         public CompositionPlan Execute(CompositionRequest input, Action<string> display)
         {
-            display("PSO started...\n");
+            display("DPSO started...\n");
 
             List<CompositionPlan> particles = input.CreateInitialPopulation().ToList();
 
@@ -27,10 +27,16 @@ namespace Leopard.Algorithms.Pso
             {
                 file.Flush();
 
-                PsoConfig psoConfig = (PsoConfig) input.Config;
+                DpsoConfig psoConfig = (DpsoConfig)input.Config;
+                double c1_primary = psoConfig.C1;
+                double c2_primary = psoConfig.C2;
 
                 for (int i = 0; i < psoConfig.MaxIteration; i++)
                 {
+                    psoConfig.C1 = ((psoConfig.MaxIteration - i) * c1_primary + (i * c2_primary)) / psoConfig.MaxIteration;
+
+                    psoConfig.C2 = ((psoConfig.MaxIteration - i) * c2_primary + (i * c1_primary)) / psoConfig.MaxIteration;
+
                     particles.ForEach(p =>
                     {
                         p.Move(gBest, psoConfig, input.TaskCandidateServices.ToList());
@@ -42,7 +48,7 @@ namespace Leopard.Algorithms.Pso
                 }
             }
 
-            display($"PSO Best Solution: {gBest}");
+            display($"DPSO Best Solution: {gBest}");
 
             return gBest;
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Leopard.Algorithms.Dpso;
 using Leopard.Algorithms.Ica;
 using Leopard.Algorithms.Pso;
 using Leopard.Domain;
@@ -20,6 +21,7 @@ namespace Leopard.Cli
 
             IcaConfig icaConfig = GetIcaConfig();
             PsoConfig psoConfig = GetPsoConfig();
+            DpsoConfig dpsoConfig = GetDpsoConfig();
 
             IRequestGenerator requestGenerator = new QwsRequestGenerator();
 
@@ -30,6 +32,10 @@ namespace Leopard.Cli
             Pso pso = new Pso();
             CompositionRequest psoRequest = requestGenerator.Generate(psoConfig);
             actions.Add(() => pso.Execute(psoRequest, DisplayAction));
+
+            Dpso dpso = new Dpso();
+            CompositionRequest dpsoRequest = requestGenerator.Generate(dpsoConfig);
+            actions.Add(() => dpso.Execute(dpsoRequest, DisplayAction));
 
             for (var i = 0; i < actions.Count; i++)
             {
@@ -70,6 +76,7 @@ namespace Leopard.Cli
             {
                 C1 = Convert.ToDouble(AppSettings("PSO").GetSection("C1").Value),
                 C2 = Convert.ToDouble(AppSettings("PSO").GetSection("C2").Value),
+                Omega = Convert.ToDouble(AppSettings("PSO").GetSection("Omega").Value),
                 OutputFile = AppSettings("PSO").GetSection("OutputFile").Value,
 
                 Tasks = GetTasks(),
@@ -81,6 +88,26 @@ namespace Leopard.Cli
             };
 
             return psoConfig;
+        }
+
+        private static DpsoConfig GetDpsoConfig()
+        {
+            DpsoConfig dpsoConfig = new DpsoConfig()
+            {
+                C1 = Convert.ToDouble(AppSettings("DPSO").GetSection("C1").Value),
+                C2 = Convert.ToDouble(AppSettings("DPSO").GetSection("C2").Value),
+                Omega = Convert.ToDouble(AppSettings("DPSO").GetSection("Omega").Value),
+                OutputFile = AppSettings("DPSO").GetSection("OutputFile").Value,
+
+                Tasks = GetTasks(),
+                DataSetFilePath = AppSettings("DataSetFilePath").Value,
+                QualityAttributeWeights = GetQualityAttributeWeights(),
+                CandidatesPerTask = Convert.ToInt32(AppSettings("CandidatesPerTask").Value),
+                FileOffset = Convert.ToInt32(AppSettings("FileOffset").Value),
+                MaxIteration = Convert.ToInt32(AppSettings("MaxIteration").Value)
+            };
+
+            return dpsoConfig;
         }
 
         private static List<SingleTask> GetTasks()
