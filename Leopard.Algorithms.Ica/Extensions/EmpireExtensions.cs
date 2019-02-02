@@ -13,13 +13,13 @@ namespace Leopard.Algorithms.Ica.Extensions
         public static List<Empire<CompositionPlan>> EliminatePowerlessEmpires(
             this List<Empire<CompositionPlan>> empires)
         {
-            
+
 
             foreach (Empire<CompositionPlan> empire in empires)
             {
                 if (empire.Colonies.Count == 0)
                 {
-                     empires.JoinRandomly(empire.Imperialist);
+                    empires.JoinRandomly(empire.Imperialist);
                 }
             }
 
@@ -56,7 +56,7 @@ namespace Leopard.Algorithms.Ica.Extensions
         private static List<Empire<CompositionPlan>> JoinRandomly(this List<Empire<CompositionPlan>> empires,
             CompositionPlan country)
         {
-            double sumNormalizedPowers = empires.Where(e=>e.Colonies.Any()).Select(e => e.NormalizedPower).Sum();
+            double sumNormalizedPowers = empires.Where(e => e.Colonies.Any()).Select(e => e.NormalizedPower).Sum();
 
             double[] probabilities = new double[empires.Count - 1];
             Random random = new Random();
@@ -85,7 +85,8 @@ namespace Leopard.Algorithms.Ica.Extensions
                 {
                     TaskService taskService = colony.TaskServices[i];
 
-                    if (mask[i] > taskService.WebService.Cost)
+                    if (mask[i] < taskService.WebService.Cost &&
+                        colony.TaskServices[i].WebService.Cost > empire.Imperialist.TaskServices[i].WebService.Cost)
                     {
                         colony.TaskServices[i].WebService = empire.Imperialist.TaskServices[i]
                             .WebService;
@@ -93,6 +94,64 @@ namespace Leopard.Algorithms.Ica.Extensions
                         //update colony's cost
                         colony.Cost = colony.CalculateCost(attributeWeights);
                     }
+                }
+            }
+
+            return empire;
+        }
+
+        public static Empire<CompositionPlan> CustomAssimilate(this Empire<CompositionPlan> empire, CompositionPlan gBest,
+            List<QualityAttributeWeight> attributeWeights, CompositionRequest request)
+        {
+            foreach (CompositionPlan colony in empire.Colonies)
+            {
+                double mut = (double)1 / request.Config.Tasks.Count;
+
+                Random r = new Random();
+
+                foreach (TaskService taskService in colony.TaskServices)
+                {
+                    double rand1 = (double)r.Next(0, 100) / 100;
+
+                    if (rand1 < mut)
+                    {
+                        List<WebService> webServices = request.TaskCandidateServices
+                            .First(t => t.Task.Equals(taskService.Task)).WebServices;
+
+                        int randomIndex = r.Next(0, webServices.Count - 1);
+
+                        taskService.WebService = webServices[randomIndex];
+                    }
+                    else
+                    if (rand1 < 0.7)
+                    {
+                        if (taskService.WebService.Cost > empire.Imperialist.TaskServices
+                                .First(t => t.Task.Equals(taskService.Task)).WebService.Cost)
+                        {
+                            taskService.WebService = empire.Imperialist.TaskServices
+                                .First(t => t.Task.Equals(taskService.Task)).WebService;
+                        }
+                    }
+                    else if (rand1 < 0.1 + 0.7)
+                    {
+                        if (taskService.WebService.Cost > colony.PBest.TaskServices
+                                .First(t => t.Task.Equals(taskService.Task)).WebService.Cost)
+                        {
+                            taskService.WebService = colony.PBest.TaskServices
+                                .First(t => t.Task.Equals(taskService.Task)).WebService;
+                        }
+                    }
+                    else
+                    {
+                        if (taskService.WebService.Cost > gBest.TaskServices
+                                .First(t => t.Task.Equals(taskService.Task)).WebService.Cost)
+                        {
+                            taskService.WebService = gBest.TaskServices
+                                .First(t => t.Task.Equals(taskService.Task)).WebService;
+                        }
+                    }
+
+                    colony.UpdatePBest((IcaConfig)request.Config);
                 }
             }
 

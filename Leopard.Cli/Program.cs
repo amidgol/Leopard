@@ -31,7 +31,7 @@ namespace Leopard.Cli
 
             Pso pso = new Pso();
             CompositionRequest psoRequest = requestGenerator.Generate(psoConfig);
-            actions.Add(() => pso.Execute(psoRequest, DisplayAction));
+            //actions.Add(() => pso.Execute(psoRequest, DisplayAction));
 
             Dpso dpso = new Dpso();
             CompositionRequest dpsoRequest = requestGenerator.Generate(dpsoConfig);

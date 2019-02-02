@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Leopard.Algorithms.Ica.Extensions;
 using Leopard.Algorithms.Ica.Models;
 using Leopard.Domain;
@@ -17,6 +18,8 @@ namespace Leopard.Algorithms.Ica
 
             List<CompositionPlan> countries = input.CreateInitialPopulation().ToList();
 
+            countries.ForEach(p=>p.PBest=p);
+
             List<Empire<CompositionPlan>> empires = CreateInitialEmpires(countries, ((IcaConfig)(input.Config))).ToList();
 
             double iteration = 1;
@@ -29,21 +32,29 @@ namespace Leopard.Algorithms.Ica
                 {
                     foreach (Empire<CompositionPlan> empire in empires)
                     {
-                        empire.Assimilate(input.Config.QualityAttributeWeights, input)
+                        CompositionPlan globalBest = empires.First().Imperialist;
+
+                        empire
+                            //.Assimilate(empire.Imperialist,input.Config.QualityAttributeWeights, input)
+                            .CustomAssimilate(globalBest,input.Config.QualityAttributeWeights, input)
+
                             .UpdateAfterAssimilation()
                             .CalculateCost(((IcaConfig)(input.Config)).Zeta);
                     }
 
                     empires.NormalizePowers().Compete();
 
-                    countries.ForEach(c=>c.Revolution(countries, ((IcaConfig)(input.Config)).RevolutionRate));
-                    
+                    //countries.ForEach(c =>
+                    //    {
+                    //        c.Revolution(countries, ((IcaConfig)(input.Config)).RevolutionRate);
+                    //    });
+
                     empires.EliminatePowerlessEmpires();
 
                     string output =
                         $"iteration {iteration}," +
                         $" empires: {empires.Count}," +
-                       // $" best solution:{empires.First().Imperialist}," +
+                        // $" best solution:{empires.First().Imperialist}," +
                         $" best cost:{empires.First().Imperialist.Cost}";
 
                     file.WriteLine($"{iteration},{empires.First().Imperialist.Cost}");
