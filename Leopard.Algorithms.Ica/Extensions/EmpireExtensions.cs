@@ -103,9 +103,11 @@ namespace Leopard.Algorithms.Ica.Extensions
         public static Empire<CompositionPlan> CustomAssimilate(this Empire<CompositionPlan> empire, CompositionPlan gBest,
             List<QualityAttributeWeight> attributeWeights, CompositionRequest request)
         {
+            IcaConfig icaConfig = (IcaConfig) request.Config;
+
             foreach (CompositionPlan colony in empire.Colonies)
             {
-                double mut = (double)1 / request.Config.Tasks.Count;
+                double revolutionRate = (double)1 / icaConfig.Tasks.Count;
 
                 Random r = new Random();
 
@@ -113,7 +115,7 @@ namespace Leopard.Algorithms.Ica.Extensions
                 {
                     double rand1 = (double)r.Next(0, 100) / 100;
 
-                    if (rand1 < mut)
+                    if (rand1 < revolutionRate)
                     {
                         List<WebService> webServices = request.TaskCandidateServices
                             .First(t => t.Task.Equals(taskService.Task)).WebServices;
@@ -123,7 +125,7 @@ namespace Leopard.Algorithms.Ica.Extensions
                         taskService.WebService = webServices[randomIndex];
                     }
                     else
-                    if (rand1 < 0.7)
+                    if (rand1 < icaConfig.Alpha)
                     {
                         if (taskService.WebService.Cost > empire.Imperialist.TaskServices
                                 .First(t => t.Task.Equals(taskService.Task)).WebService.Cost)
@@ -132,7 +134,7 @@ namespace Leopard.Algorithms.Ica.Extensions
                                 .First(t => t.Task.Equals(taskService.Task)).WebService;
                         }
                     }
-                    else if (rand1 < 0.1 + 0.7)
+                    else if (rand1 < icaConfig.Alpha + icaConfig.Beta)
                     {
                         if (taskService.WebService.Cost > colony.PBest.TaskServices
                                 .First(t => t.Task.Equals(taskService.Task)).WebService.Cost)
@@ -151,7 +153,7 @@ namespace Leopard.Algorithms.Ica.Extensions
                         }
                     }
 
-                    colony.UpdatePBest((IcaConfig)request.Config);
+                    colony.UpdatePBest(icaConfig);
                 }
             }
 

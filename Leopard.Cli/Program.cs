@@ -54,9 +54,12 @@ namespace Leopard.Cli
             {
                 InitialEmpiresCount = Convert.ToInt32(AppSettings("ICA")
                     .GetSection("InitialEmpiresCount").Value),
+
                 Zeta = Convert.ToDouble(AppSettings("ICA").GetSection("Zeta").Value),
-                RevolutionRate = Convert.ToDouble(AppSettings("ICA")
-                    .GetSection("RevolutionRate").Value),
+                Alpha = Convert.ToDouble(AppSettings("ICA").GetSection("Alpha").Value),
+                Beta = Convert.ToDouble(AppSettings("ICA").GetSection("Beta").Value),
+                Gamma = Convert.ToDouble(AppSettings("ICA").GetSection("Gama").Value),
+               
                 OutputFile = AppSettings("ICA").GetSection("OutputFile").Value,
 
                 Tasks = GetTasks(),
