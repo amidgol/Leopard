@@ -54,6 +54,8 @@ Ankh.NoLoad
 App.config
 Web.config
 Web.Debug.config
+
+output-files/
 Web.Release.config
 */publish/*
 
