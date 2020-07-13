@@ -56,7 +56,11 @@ Web.config
 Web.Debug.config
 
 output-files/
+
 Web.Release.config
 */publish/*
+
+
+/.vscode/*
 
 
