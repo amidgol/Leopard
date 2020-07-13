@@ -35,19 +35,12 @@ namespace Leopard.Algorithms.Ica
                         CompositionPlan globalBest = empires.First().Imperialist;
 
                         empire
-                            //.Assimilate(empire.Imperialist,input.Config.QualityAttributeWeights, input)
                             .CustomAssimilate(globalBest,input.Config.QualityAttributeWeights, input)
-
                             .UpdateAfterAssimilation()
                             .CalculateCost(((IcaConfig)(input.Config)).Zeta);
                     }
 
                     empires.NormalizePowers().Compete();
-
-                    //countries.ForEach(c =>
-                    //    {
-                    //        c.Revolution(countries, ((IcaConfig)(input.Config)).RevolutionRate);
-                    //    });
 
                     empires.EliminatePowerlessEmpires();
 

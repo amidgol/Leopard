@@ -28,10 +28,10 @@ namespace Leopard.Cli
             Ica ica = new Ica();
             CompositionRequest icaRequest = requestGenerator.Generate(icaConfig);
             actions.Add(() => ica.Execute(icaRequest, DisplayAction));
-
-            Pso pso = new Pso();
-            CompositionRequest psoRequest = requestGenerator.Generate(psoConfig);
-            //actions.Add(() => pso.Execute(psoRequest, DisplayAction));
+            
+            // Pso pso = new Pso();
+            // CompositionRequest psoRequest = requestGenerator.Generate(psoConfig);
+            // actions.Add(() => pso.Execute(psoRequest, DisplayAction));
 
             Dpso dpso = new Dpso();
             CompositionRequest dpsoRequest = requestGenerator.Generate(dpsoConfig);
@@ -44,8 +44,6 @@ namespace Leopard.Cli
                 var a = actions[i];
                 a.Invoke();
             }
-
-            Console.ReadLine();
         }
 
         private static IcaConfig GetIcaConfig()
@@ -54,14 +52,8 @@ namespace Leopard.Cli
             {
                 InitialEmpiresCount = Convert.ToInt32(AppSettings("ICA")
                     .GetSection("InitialEmpiresCount").Value),
-
                 Zeta = Convert.ToDouble(AppSettings("ICA").GetSection("Zeta").Value),
-                Alpha = Convert.ToDouble(AppSettings("ICA").GetSection("Alpha").Value),
-                Beta = Convert.ToDouble(AppSettings("ICA").GetSection("Beta").Value),
-                Gamma = Convert.ToDouble(AppSettings("ICA").GetSection("Gama").Value),
-               
                 OutputFile = AppSettings("ICA").GetSection("OutputFile").Value,
-
                 Tasks = GetTasks(),
                 DataSetFilePath = AppSettings("DataSetFilePath").Value,
                 QualityAttributeWeights = GetQualityAttributeWeights(),

@@ -6,9 +6,5 @@ namespace Leopard.Algorithms.Ica
     {
         public int InitialEmpiresCount { get; set; } = 10;
         public double Zeta { get; set; } = 0.1;
-
-        public double Alpha { get; set; } = 0.7;
-        public double Beta { get; set; } = 0.1;
-        public double Gamma { get; set; } = 0.2;
     }
 }
