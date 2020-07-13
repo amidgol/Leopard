@@ -85,7 +85,7 @@ namespace Leopard.Algorithms.Ica.Extensions {
             return empire;
         }
 
-        public static Empire<CompositionPlan> CustomAssimilate (this Empire<CompositionPlan> empire, CompositionPlan gBest,
+        public static Empire<CompositionPlan> CustomAssimilate (this Empire<CompositionPlan> empire,
             List<QualityAttributeWeight> attributeWeights, CompositionRequest request) {
             IcaConfig icaConfig = (IcaConfig) request.Config;
 
@@ -112,7 +112,7 @@ namespace Leopard.Algorithms.Ica.Extensions {
                         }
                     }
 
-                    colony.UpdatePBest (icaConfig);
+                    colony.Cost = colony.CalculateCost(icaConfig.QualityAttributeWeights);
                 }
             }
 

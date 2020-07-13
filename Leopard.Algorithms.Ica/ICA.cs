@@ -18,8 +18,6 @@ namespace Leopard.Algorithms.Ica
 
             List<CompositionPlan> countries = input.CreateInitialPopulation().ToList();
 
-            countries.ForEach(p=>p.PBest=p);
-
             List<Empire<CompositionPlan>> empires = CreateInitialEmpires(countries, ((IcaConfig)(input.Config))).ToList();
 
             double iteration = 1;
@@ -32,10 +30,8 @@ namespace Leopard.Algorithms.Ica
                 {
                     foreach (Empire<CompositionPlan> empire in empires)
                     {
-                        CompositionPlan globalBest = empires.First().Imperialist;
-
                         empire
-                            .CustomAssimilate(globalBest,input.Config.QualityAttributeWeights, input)
+                            .CustomAssimilate(input.Config.QualityAttributeWeights, input)
                             .UpdateAfterAssimilation()
                             .CalculateCost(((IcaConfig)(input.Config)).Zeta);
                     }
