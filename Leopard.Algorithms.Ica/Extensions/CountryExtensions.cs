@@ -27,16 +27,5 @@ namespace Leopard.Algorithms.Ica.Extensions
 
             return country;
         }
-
-        public static CompositionPlan UpdatePBest(this CompositionPlan compositionPlan,
-            IcaConfig icaConfig)
-        {
-            compositionPlan.Cost = compositionPlan.CalculateCost(icaConfig.QualityAttributeWeights);
-
-            if (compositionPlan.Cost < compositionPlan.PBest.Cost)
-                compositionPlan.PBest = compositionPlan;
-
-            return compositionPlan;
-        }
     }
 }
